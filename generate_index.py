@@ -2,18 +2,6 @@ import os
 
 EXCLUDE = {"index.html"}
 
-def get_icon(filename):
-    f = filename.lower()
-    if "push" in f:     return "🔔"
-    if "inbox" in f:    return "📬"
-    if "visual" in f:   return "🎨"
-    if "display" in f:  return "🖥️"
-    if "rudder" in f:   return "🔀"
-    if "axis" in f:     return "🎯"
-    if "pe" in f:       return "⚡"
-    if "sample" in f:   return "⚡"
-    return "🌐"
-
 def get_tag(filename):
     f = filename.lower()
     if "push" in f:     return "Push"
@@ -35,7 +23,7 @@ def get_desc(filename):
     if "push" in f:         return "Web push notification setup and integration demo."
     if "inbox" in f:        return "Web inbox messaging feature demo and implementation."
     if "visual" in f:       return "Visual builder for creating web campaigns and layouts."
-    if "display2" in f:     return "Banner & carousel display demo with CleverTap event tracking."
+    if "display2" in f:     return "Banner &amp; carousel display demo with CleverTap event tracking."
     if "display" in f:      return "Core web native display component showcase."
     if "rudder" in f:       return "Sample integration connecting RudderStack with CleverTap."
     if "axis" in f:         return "Product Experiences demo tailored for the Axis use case."
@@ -50,82 +38,101 @@ html_files = sorted([
 
 cards = ""
 for i, f in enumerate(html_files, 1):
+    delay = 0.3 + (i - 1) * 0.08
     cards += f"""
-      <a class="card" href="{f}" target="_blank">
+      <a class="card" href="{f}" style="animation-delay: {delay:.2f}s">
         <span class="card-number">{str(i).zfill(2)}</span>
         <span class="card-tag">{get_tag(f)}</span>
-        <div class="card-icon">{get_icon(f)}</div>
         <div class="card-title">{get_title(f)}</div>
         <div class="card-desc">{get_desc(f)}</div>
-        <div class="card-arrow">Open demo →</div>
+        <div class="card-arrow">Open demo</div>
       </a>
 """
 
 html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Rashmi's Demo Websites</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
     :root {{
       --bg: #f5f0eb;
-      --card: #fff;
-      --border: #e0d8d0;
+      --surface: #ede6dd;
       --accent: #c0392b;
       --text: #1a1412;
       --muted: #8a7f78;
+      --border: rgba(180, 140, 120, 0.25);
     }}
 
-    * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+    *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
 
     body {{
       background: var(--bg);
       color: var(--text);
-      font-family: 'Syne', sans-serif;
+      font-family: 'DM Mono', monospace;
       min-height: 100vh;
+      overflow-x: hidden;
     }}
+
+    .glow-orb {{
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }}
+    .glow-orb-1 {{ width: 500px; height: 500px; background: rgba(192,57,43,0.07); top: -100px; right: -100px; }}
+    .glow-orb-2 {{ width: 400px; height: 400px; background: rgba(124,58,237,0.05); bottom: 100px; left: -100px; }}
 
     .container {{
-      max-width: 960px;
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
       margin: 0 auto;
-      padding: 60px 24px 80px;
+      padding: 80px 32px 100px;
     }}
 
-    header {{ margin-bottom: 52px; }}
+    header {{ margin-bottom: 72px; }}
 
     .eyebrow {{
-      font-family: 'Space Mono', monospace;
       font-size: 11px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+      letter-spacing: 0.25em;
       color: var(--accent);
-      margin-bottom: 12px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards;
     }}
 
     h1 {{
-      font-size: clamp(2.2rem, 5vw, 3.5rem);
-      font-weight: 800;
-      line-height: 1.05;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(38px, 7vw, 68px);
+      font-weight: 700;
+      line-height: 1.1;
       letter-spacing: -0.02em;
       color: var(--text);
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.1s forwards;
     }}
 
     .subtitle {{
-      margin-top: 10px;
-      font-family: 'Space Mono', monospace;
-      font-size: 12px;
+      margin-top: 16px;
+      font-size: 13px;
       color: var(--muted);
+      letter-spacing: 0.05em;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.2s forwards;
     }}
 
-    .section-label {{
-      font-family: 'Space Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 20px;
+    .divider {{
+      width: 60px;
+      height: 1px;
+      background: var(--border);
+      margin: 32px 0;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.25s forwards;
     }}
 
     .grid {{
@@ -135,89 +142,118 @@ html = f"""<!DOCTYPE html>
     }}
 
     .card {{
-      background: var(--card);
+      position: relative;
+      background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 24px;
+      border-radius: 4px;
+      padding: 28px 28px 24px;
       text-decoration: none;
       color: var(--text);
       display: flex;
       flex-direction: column;
       gap: 10px;
-      position: relative;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeUp 0.5s ease forwards;
+    }}
+
+    .card::after {{
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(192,57,43,0.04) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
     }}
 
     .card:hover {{
-      transform: translateY(-4px);
-      border-color: var(--accent);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+      border-color: rgba(192,57,43,0.35);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.1), 0 0 0 1px rgba(192,57,43,0.1);
     }}
 
-    .card-number {{
-      font-family: 'Space Mono', monospace;
-      font-size: 10px;
-      color: var(--muted);
-    }}
+    .card:hover::after {{ opacity: 1; }}
 
     .card-tag {{
-      position: absolute;
-      top: 24px;
-      right: 20px;
-      font-family: 'Space Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.1em;
+      font-size: 10px;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--muted);
-      border: 1px solid var(--border);
-      padding: 3px 8px;
-      border-radius: 99px;
+      color: var(--accent);
+      font-weight: 500;
     }}
 
-    .card-icon {{ font-size: 1.8rem; }}
-
     .card-title {{
-      font-size: 1rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
       font-weight: 700;
-      letter-spacing: -0.01em;
+      line-height: 1.25;
+      color: var(--text);
     }}
 
     .card-desc {{
-      font-family: 'Space Mono', monospace;
-      font-size: 11px;
+      font-size: 12px;
       color: var(--muted);
       line-height: 1.6;
       flex: 1;
     }}
 
     .card-arrow {{
-      font-family: 'Space Mono', monospace;
-      font-size: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      letter-spacing: 0.1em;
       color: var(--accent);
-      margin-top: 4px;
+      text-transform: uppercase;
+      margin-top: 6px;
+      transition: gap 0.2s;
+    }}
+
+    .card:hover .card-arrow {{ gap: 10px; }}
+    .card-arrow::after {{ content: '→'; }}
+
+    .card-number {{
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      font-size: 11px;
+      color: rgba(107,104,128,0.4);
+      letter-spacing: 0.1em;
     }}
 
     footer {{
-      margin-top: 60px;
-      display: flex;
-      justify-content: space-between;
-      font-family: 'Space Mono', monospace;
+      margin-top: 80px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
       font-size: 11px;
       color: var(--muted);
-      border-top: 1px solid var(--border);
-      padding-top: 24px;
+      letter-spacing: 0.1em;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 1s forwards;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }}
+
+    @keyframes fadeUp {{
+      from {{ opacity: 0; transform: translateY(16px); }}
+      to   {{ opacity: 1; transform: translateY(0); }}
     }}
   </style>
 </head>
 <body>
+  <div class="glow-orb glow-orb-1"></div>
+  <div class="glow-orb glow-orb-2"></div>
+
   <div class="container">
     <header>
-      <div class="eyebrow">Rashmi-9514 · GitHub Pages</div>
+      <p class="eyebrow">Rashmi-9514 · GitHub Pages</p>
       <h1>Demo<br>Websites</h1>
       <p class="subtitle">// Click any card to open the demo</p>
+      <div class="divider"></div>
     </header>
-
-    <p class="section-label">// All pages — {len(html_files)} demos</p>
 
     <div class="grid">
 {cards}
