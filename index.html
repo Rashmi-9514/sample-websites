@@ -1,111 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Rashmi's Demo Websites</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet"/>
   <style>
     :root {
       --bg: #f5f0eb;
-      --surface: #ede6dd;
+      --card: #fff;
+      --border: #e0d8d0;
       --accent: #c0392b;
-      --accent2: #7c3aed;
       --text: #1a1412;
       --muted: #8a7f78;
-      --border: rgba(180, 140, 120, 0.25);
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'DM Mono', monospace;
+      font-family: 'Syne', sans-serif;
       min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.6;
-    }
-
-    .glow-orb {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(120px);
-      pointer-events: none;
-      z-index: 0;
-    }
-    .glow-orb-1 {
-      width: 500px; height: 500px;
-      background: rgba(192, 57, 43, 0.07);
-      top: -100px; right: -100px;
-    }
-    .glow-orb-2 {
-      width: 400px; height: 400px;
-      background: rgba(124, 58, 237, 0.05);
-      bottom: 100px; left: -100px;
     }
 
     .container {
-      position: relative;
-      z-index: 1;
-      max-width: 860px;
+      max-width: 960px;
       margin: 0 auto;
-      padding: 80px 32px 100px;
+      padding: 60px 24px 80px;
     }
 
-    header { margin-bottom: 72px; }
+    header { margin-bottom: 52px; }
 
     .eyebrow {
+      font-family: 'Space Mono', monospace;
       font-size: 11px;
-      letter-spacing: 0.25em;
-      color: var(--accent);
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      margin-bottom: 16px;
-      opacity: 0;
-      animation: fadeUp 0.6s ease forwards;
+      color: var(--accent);
+      margin-bottom: 12px;
     }
 
     h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(38px, 7vw, 68px);
-      font-weight: 700;
-      line-height: 1.1;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.05;
       letter-spacing: -0.02em;
       color: var(--text);
-      opacity: 0;
-      animation: fadeUp 0.6s ease 0.1s forwards;
-    }
-
-    h1 em {
-      font-style: italic;
-      color: var(--accent);
     }
 
     .subtitle {
-      margin-top: 16px;
-      font-size: 13px;
+      margin-top: 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
       color: var(--muted);
-      letter-spacing: 0.05em;
-      opacity: 0;
-      animation: fadeUp 0.6s ease 0.2s forwards;
     }
 
-    .divider {
-      width: 60px;
-      height: 1px;
-      background: var(--border);
-      margin: 32px 0;
-      opacity: 0;
-      animation: fadeUp 0.6s ease 0.25s forwards;
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
     }
 
     .grid {
@@ -115,199 +72,178 @@
     }
 
     .card {
-      position: relative;
-      background: var(--surface);
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 28px 28px 24px;
+      border-radius: 14px;
+      padding: 24px;
       text-decoration: none;
       color: var(--text);
       display: flex;
       flex-direction: column;
       gap: 10px;
-      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
-      overflow: hidden;
-      opacity: 0;
-      animation: fadeUp 0.5s ease forwards;
-    }
-
-    .card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(192,57,43,0.04) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity 0.3s;
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
     .card:hover {
-      border-color: rgba(192, 57, 43, 0.35);
-      transform: translateY(-3px);
-      box-shadow: 0 16px 40px rgba(0,0,0,0.1), 0 0 0 1px rgba(192,57,43,0.1);
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
     }
 
-    .card:hover::after { opacity: 1; }
+    .card-number {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+    }
 
     .card-tag {
-      font-size: 10px;
-      letter-spacing: 0.2em;
+      position: absolute;
+      top: 24px;
+      right: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--accent);
-      font-weight: 500;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 3px 8px;
+      border-radius: 99px;
     }
 
+    .card-icon { font-size: 1.8rem; }
+
     .card-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 20px;
+      font-size: 1rem;
       font-weight: 700;
-      line-height: 1.25;
-      color: var(--text);
+      letter-spacing: -0.01em;
     }
 
     .card-desc {
-      font-size: 12px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
       color: var(--muted);
       line-height: 1.6;
       flex: 1;
     }
 
     .card-arrow {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      letter-spacing: 0.1em;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
       color: var(--accent);
-      text-transform: uppercase;
-      margin-top: 6px;
-      transition: gap 0.2s;
+      margin-top: 4px;
     }
-
-    .card:hover .card-arrow { gap: 10px; }
-    .card-arrow::after { content: '→'; }
-
-    .card-number {
-      position: absolute;
-      top: 20px;
-      right: 24px;
-      font-size: 11px;
-      color: rgba(107,104,128,0.4);
-      letter-spacing: 0.1em;
-    }
-
-    .card:nth-child(1) { animation-delay: 0.3s; }
-    .card:nth-child(2) { animation-delay: 0.38s; }
-    .card:nth-child(3) { animation-delay: 0.46s; }
-    .card:nth-child(4) { animation-delay: 0.54s; }
-    .card:nth-child(5) { animation-delay: 0.62s; }
-    .card:nth-child(6) { animation-delay: 0.70s; }
-    .card:nth-child(7) { animation-delay: 0.78s; }
-    .card:nth-child(8) { animation-delay: 0.86s; }
 
     footer {
-      margin-top: 80px;
-      padding-top: 32px;
-      border-top: 1px solid var(--border);
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      opacity: 0;
-      animation: fadeUp 0.6s ease 1s forwards;
+      margin-top: 60px;
       display: flex;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
     }
   </style>
 </head>
 <body>
-  <div class="glow-orb glow-orb-1"></div>
-  <div class="glow-orb glow-orb-2"></div>
-
   <div class="container">
     <header>
-      <p class="eyebrow">Rashmi-9514 · GitHub Pages</p>
+      <div class="eyebrow">Rashmi-9514 · GitHub Pages</div>
       <h1>Demo<br>Websites</h1>
       <p class="subtitle">// Click any card to open the demo</p>
-      <div class="divider"></div>
     </header>
+
+    <p class="section-label">// All pages — 9 demos</p>
 
     <div class="grid">
 
-      <a class="card" href="WebNative Display2.html">
+      <a class="card" href="WebNative Display2.html" target="_blank">
         <span class="card-number">01</span>
         <span class="card-tag">Display</span>
-        <div class="card-title">Web Native Display 2</div>
+        <div class="card-icon">🖥️</div>
+        <div class="card-title">Webnative Display2</div>
         <div class="card-desc">Banner & carousel display demo with CleverTap event tracking.</div>
-        <div class="card-arrow">Open demo</div>
+        <div class="card-arrow">Open demo →</div>
       </a>
 
-      <a class="card" href="WebNativeDisplay.html">
+      <a class="card" href="WebNativeDisplay.html" target="_blank">
         <span class="card-number">02</span>
         <span class="card-tag">Display</span>
-        <div class="card-title">Web Native Display</div>
-        <div class="card-desc">Core web native display component showcase and integration.</div>
-        <div class="card-arrow">Open demo</div>
+        <div class="card-icon">🖥️</div>
+        <div class="card-title">Webnativedisplay</div>
+        <div class="card-desc">Core web native display component showcase.</div>
+        <div class="card-arrow">Open demo →</div>
       </a>
 
-      <a class="card" href="sample_pe_demo.html">
+      <a class="card" href="pe_for_axis.html" target="_blank">
         <span class="card-number">03</span>
-        <span class="card-tag">Web SDK</span>
-        <div class="card-title">Sample PE Demo</div>
-        <div class="card-desc">Product Experiences demo via the CleverTap Web SDK.</div>
-        <div class="card-arrow">Open demo</div>
-      </a>
-
-      <a class="card" href="pe_for_axis.html">
-        <span class="card-number">04</span>
         <span class="card-tag">PE · Axis</span>
-        <div class="card-title">PE for Axis</div>
+        <div class="card-icon">🎯</div>
+        <div class="card-title">Pe For Axis</div>
         <div class="card-desc">Product Experiences demo tailored for the Axis use case.</div>
-        <div class="card-arrow">Open demo</div>
+        <div class="card-arrow">Open demo →</div>
       </a>
 
-      <a class="card" href="push_notification.html">
-        <span class="card-number">05</span>
+      <a class="card" href="push_notification.html" target="_blank">
+        <span class="card-number">04</span>
         <span class="card-tag">Push</span>
+        <div class="card-icon">🔔</div>
         <div class="card-title">Push Notification</div>
         <div class="card-desc">Web push notification setup and integration demo.</div>
-        <div class="card-arrow">Open demo</div>
+        <div class="card-arrow">Open demo →</div>
       </a>
 
-      <a class="card" href="rudderstacksample.html">
-        <span class="card-number">06</span>
+      <a class="card" href="rudderstacksample.html" target="_blank">
+        <span class="card-number">05</span>
         <span class="card-tag">Integration</span>
-        <div class="card-title">RudderStack Sample</div>
+        <div class="card-icon">🔀</div>
+        <div class="card-title">Rudderstacksample</div>
         <div class="card-desc">Sample integration connecting RudderStack with CleverTap.</div>
-        <div class="card-arrow">Open demo</div>
+        <div class="card-arrow">Open demo →</div>
       </a>
 
-      <a class="card" href="web_visual_builder.html">
+      <a class="card" href="sample_pe_demo.html" target="_blank">
+        <span class="card-number">06</span>
+        <span class="card-tag">Web SDK</span>
+        <div class="card-icon">⚡</div>
+        <div class="card-title">Sample Pe Demo</div>
+        <div class="card-desc">Product Experiences demo via the CleverTap Web SDK.</div>
+        <div class="card-arrow">Open demo →</div>
+      </a>
+
+      <a class="card" href="vijaysales.html" target="_blank">
         <span class="card-number">07</span>
-        <span class="card-tag">Builder</span>
-        <div class="card-title">Web Visual Builder</div>
-        <div class="card-desc">Visual builder interface for creating web campaigns and layouts.</div>
-        <div class="card-arrow">Open demo</div>
+        <span class="card-tag">Demo</span>
+        <div class="card-icon">🌐</div>
+        <div class="card-title">Vijaysales</div>
+        <div class="card-desc">Demo page hosted on GitHub Pages.</div>
+        <div class="card-arrow">Open demo →</div>
       </a>
 
-      <a class="card" href="webinbox.html">
+      <a class="card" href="web_visual_builder.html" target="_blank">
         <span class="card-number">08</span>
+        <span class="card-tag">Builder</span>
+        <div class="card-icon">🎨</div>
+        <div class="card-title">Web Visual Builder</div>
+        <div class="card-desc">Visual builder for creating web campaigns and layouts.</div>
+        <div class="card-arrow">Open demo →</div>
+      </a>
+
+      <a class="card" href="webinbox.html" target="_blank">
+        <span class="card-number">09</span>
         <span class="card-tag">Inbox</span>
-        <div class="card-title">Web Inbox</div>
+        <div class="card-icon">📬</div>
+        <div class="card-title">Webinbox</div>
         <div class="card-desc">Web inbox messaging feature demo and implementation.</div>
-        <div class="card-arrow">Open demo</div>
+        <div class="card-arrow">Open demo →</div>
       </a>
 
     </div>
 
     <footer>
       <span>Rashmi · Demo Collection</span>
-      <span>8 demos</span>
+      <span>9 demos</span>
     </footer>
   </div>
 </body>
