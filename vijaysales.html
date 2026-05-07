@@ -19,6 +19,27 @@
     s.parentNode.insertBefore(wzrk, s);
   })();
 </script>
+<script type="text/javascript">
+  window.addEventListener('load', function () {
+
+    // Randomly assign Even or Odd cohort
+    var cohort = Math.random() < 0.5 ? 'Even' : 'Odd';
+
+    // Push user profile property
+    clevertap.profile.push({
+      "Site": {
+        "User Cohort": cohort
+      }
+    });
+
+    // Push Page View event
+    clevertap.event.push("Homepage Viewed", {
+      "Page": "Home",
+      "User Cohort": cohort
+    });
+
+  });
+</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Roboto',sans-serif;background:#f0f0f0;color:#222;font-size:14px}
