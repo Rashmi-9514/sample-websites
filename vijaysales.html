@@ -21,16 +21,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <script type="text/javascript">
   // CleverTap SDK Initialization
-  var clevertap = {
-    event: [],
-    profile: [],
-    account: [],
-    onUserLogin: [],
-    notifications: [],
-    privacy: [],
-    // Stub to prevent "renderNotificationViewed is not a function" error in Visual Editor preview
-    renderNotificationViewed: function() {}
-  };
+  var clevertap = { event: [], profile: [], account: [], onUserLogin: [], notifications: [], privacy: [] };
 
   clevertap.account.push({ "id": "WW6-988-RW7Z" });
   clevertap.privacy.push({ optOut: false });
@@ -40,9 +31,9 @@
     var wzrk = document.createElement('script');
     wzrk.type = 'text/javascript';
     wzrk.async = true;
-    wzrk.src = ('https:' == document.location.protocol ? 'https://d2r1yp2w7bby2u.cloudfront.net' : 'http://static.clevertap.com') + '/js/clevertap.min.js';
+    wzrk.src = (document.location.protocol === 'https:' ? 'https://d2r1yp2w7bby2u.cloudfront.net' : 'http://static.clevertap.com') + '/js/clevertap.min.js';
     wzrk.onload = function () {
-      // SDK fully loaded — now safe to fire profile + event
+      // SDK fully loaded; now safe to fire profile + event.
       try {
         // SDK version check
         if (clevertap.getSDKVersion) {
