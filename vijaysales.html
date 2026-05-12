@@ -36,6 +36,16 @@
     s.parentNode.insertBefore(wzrk, s);
   })();
 
+  // Null guard for CleverTap Visual Editor reordering bug
+  // Prevents "Cannot read properties of null (reading 'includes')" error
+  if (typeof Node !== 'undefined' && Node.prototype) {
+    var _contains = Node.prototype.contains;
+    Node.prototype.contains = function(node) {
+      if (node == null) return false;
+      return _contains.call(this, node);
+    };
+  }
+
   // Randomly assign Even or Odd cohort
   var cohort = Math.random() < 0.5 ? 'Even' : 'Odd';
 
