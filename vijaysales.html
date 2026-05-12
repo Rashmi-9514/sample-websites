@@ -5,9 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vijay Sales: Best Online Electronics Shopping Store in India</title>
 <!-- ── CleverTap Visual Editor Prerequisites ── -->
-
-<!-- 1. Content Security Policy: frame-ancestors 'self' allows CleverTap Visual Editor to embed the page -->
-<meta http-equiv="Content-Security-Policy" content="frame-ancestors 'self';">
+<!-- NOTE: frame-ancestors CSP must be set as an HTTP response header on your server, not via meta tag -->
+<!-- Add this to your server config:
+     Cross-Origin-Opener-Policy: same-origin-allow-popups
+     Cross-Origin-Embedder-Policy: unsafe-none
+     Content-Security-Policy: frame-ancestors 'self'
+-->
 
 <!-- 2. Cross-Origin-Opener-Policy: allows popups from same-origin (required for Visual Editor) -->
 <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin-allow-popups">
@@ -31,10 +34,10 @@
   })();
 </script>
 <script type="text/javascript">
-  window.addEventListener('load', function () {
+  document.addEventListener('DOMContentLoaded', function () {
 
     // SDK version check - Visual Editor requires v1.13.1+
-    if (clevertap.getSDKVersion) {
+    if (clevertap && clevertap.getSDKVersion) {
       console.log('[CleverTap] SDK Version:', clevertap.getSDKVersion());
     }
 
@@ -42,17 +45,21 @@
     var cohort = Math.random() < 0.5 ? 'Even' : 'Odd';
 
     // Push user profile property
-    clevertap.profile.push({
-      "Site": {
-        "User Cohort": cohort
-      }
-    });
+    if (clevertap && clevertap.profile) {
+      clevertap.profile.push({
+        "Site": {
+          "User Cohort": cohort
+        }
+      });
+    }
 
     // Push Page View event
-    clevertap.event.push("Homepage Viewed", {
-      "Page": "Home",
-      "User Cohort": cohort
-    });
+    if (clevertap && clevertap.event) {
+      clevertap.event.push("Homepage Viewed", {
+        "Page": "Home",
+        "User Cohort": cohort
+      });
+    }
 
   });
 </script>
