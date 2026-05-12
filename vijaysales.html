@@ -20,17 +20,8 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <script type="text/javascript">
-  // CleverTap SDK Initialization
-  var clevertap = {
-    event: [],
-    profile: [],
-    account: [],
-    onUserLogin: [],
-    notifications: [],
-    privacy: [],
-    // Stub to prevent "renderNotificationViewed is not a function" error in Visual Editor preview
-    renderNotificationViewed: function() {}
-  };
+  // CleverTap SDK Initialization — matches working config exactly
+  var clevertap = { event: [], profile: [], account: [], onUserLogin: [], notifications: [], privacy: [] };
 
   clevertap.account.push({ "id": "WW6-988-RW7Z" });
   clevertap.privacy.push({ optOut: false });
@@ -41,38 +32,25 @@
     wzrk.type = 'text/javascript';
     wzrk.async = true;
     wzrk.src = ('https:' == document.location.protocol ? 'https://d2r1yp2w7bby2u.cloudfront.net' : 'http://static.clevertap.com') + '/js/clevertap.min.js';
-    wzrk.onload = function () {
-      // SDK fully loaded — now safe to fire profile + event
-      try {
-        // SDK version check
-        if (clevertap.getSDKVersion) {
-          console.log('[CleverTap] SDK Version:', clevertap.getSDKVersion());
-        }
-
-        // Randomly assign Even or Odd cohort
-        var cohort = Math.random() < 0.5 ? 'Even' : 'Odd';
-        console.log('[CleverTap] Assigned cohort:', cohort);
-
-        // Push user profile property
-        clevertap.profile.push({
-          "Site": {
-            "User Cohort": cohort
-          }
-        });
-
-        // Push Homepage Viewed event
-        clevertap.event.push("Homepage Viewed", {
-          "Page": "Home",
-          "User Cohort": cohort
-        });
-
-      } catch (e) {
-        console.warn('[CleverTap] Error during init:', e);
-      }
-    };
     var s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(wzrk, s);
   })();
+
+  // Randomly assign Even or Odd cohort
+  var cohort = Math.random() < 0.5 ? 'Even' : 'Odd';
+
+  // Push user profile property — queued and fired once SDK loads
+  clevertap.profile.push({
+    "Site": {
+      "User Cohort": cohort
+    }
+  });
+
+  // Push Homepage Viewed event — queued and fired once SDK loads
+  clevertap.event.push("Homepage Viewed", {
+    "Page": "Home",
+    "User Cohort": cohort
+  });
 </script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
